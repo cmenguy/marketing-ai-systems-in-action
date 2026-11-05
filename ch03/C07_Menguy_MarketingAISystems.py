@@ -49,7 +49,7 @@ def time_window_layer(camp: Campaign, today: date) -> PromptLayer:
             f"{camp.code} is not live on {today} "
             f"({camp.valid_from}..{camp.valid_through})"
         )
-    ends = camp.valid_through.strftime("%B %-d")
+    ends = f"{camp.valid_through:%B} {camp.valid_through.day}"
     return PromptLayer(
         "time_window", "marketing",
         f"{event_instruction(camp)} "

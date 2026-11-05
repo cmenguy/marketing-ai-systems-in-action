@@ -37,7 +37,7 @@ def chapter_dirs(selected: list[str]) -> list[Path]:
 def module_level_imports(path: Path) -> list[str]:
     """Imports that run when the file loads; imports inside functions or try blocks are optional."""
     names = []
-    for node in ast.parse(path.read_text(), filename=str(path)).body:
+    for node in ast.parse(path.read_text(encoding="utf-8"), filename=str(path)).body:
         if isinstance(node, ast.Import):
             names += [a.name.split(".")[0] for a in node.names]
         elif isinstance(node, ast.ImportFrom) and node.level == 0 and node.module:
@@ -101,7 +101,9 @@ def main() -> int:
                     [sys.executable, listing.name],
                     cwd=chapter,
                     capture_output=True,
-                    text=True,
+                    encoding="utf-8",
+                    errors="replace",
+                    env={**os.environ, "PYTHONIOENCODING": "utf-8"},
                     timeout=args.timeout,
                 )
                 ok, output = result.returncode == 0, result.stderr or result.stdout
