@@ -1,0 +1,3 @@
+# Core dependencies: enough to run most listings offline, with no API key.
+# Tested with Python 3.12 and numpy 2.2.6.
+numpy>=1.26

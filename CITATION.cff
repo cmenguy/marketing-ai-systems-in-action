@@ -1,0 +1,17 @@
+cff-version: 1.2.0
+message: "If you use this code, please cite the book."
+title: "Marketing AI Systems in Action"
+type: software
+authors:
+  - family-names: Menguy
+    given-names: Charles
+repository-code: "https://github.com/cmenguy/marketing-ai-systems-in-action"
+license: MIT
+preferred-citation:
+  type: book
+  title: "Marketing AI Systems in Action: Build, scale, and govern brand-safe generative AI pipelines"
+  authors:
+    - family-names: Menguy
+      given-names: Charles
+  publisher:
+    name: Manning Publications

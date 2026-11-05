@@ -1,0 +1,21 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+*.egg-info/
+.pytest_cache/
+.ipynb_checkpoints/
+
+# Secrets
+.env
+
+# Training and experiment outputs
+mlruns/
+checkpoints/
+wandb/
+
+# Editors and OS
+.idea/
+.vscode/
+.DS_Store
