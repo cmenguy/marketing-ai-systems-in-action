@@ -1,18 +1,14 @@
-# Optional dependencies for the listings that go beyond the core install.
-# Install on top of requirements.txt:  pip install -r requirements-extras.txt
-# Lower bounds are the versions the code was tested with.
-
-# Chapter 2: embedding and LoRA fine-tuning (a GPU helps but is not required)
-torch>=2.6
-transformers>=4.57
-peft>=0.18
-trl>=0.29
-datasets>=3.3
-sentence-transformers>=5.2
-
-# Chapter 6: image assembly and compositing
-pillow>=12.2
-
-# Listings that call a hosted model (need an API key, see .env.example)
-anthropic>=0.112
-openai>=2.31
+# Optional dependencies, installed on top of requirements.txt.
+# The comment on each line lists the chapters that import it.
+anthropic>=0.112                # ch08
+datasets>=3.3                   # ch02
+google-genai>=2.22.0            # ch06
+imageio[ffmpeg]                 # ch06
+matplotlib>=3.9.2               # ch05
+openai>=2.31                    # ch06
+peft>=0.18                      # ch02
+pillow>=12.2                    # ch06
+sentence-transformers>=5.2      # ch02, ch04
+torch>=2.6                      # ch02
+transformers>=4.57              # ch02
+trl>=0.29                       # ch02
