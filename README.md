@@ -30,9 +30,9 @@ cp .env.example .env                       # only needed for listings that call 
 
 Most listings use only the standard library and NumPy. They run offline with no
 API key because model calls are injected as plain callables and replaced by
-stubs in each file's `__main__` block. A few listings need the extras: the
-chapter 2 fine-tuning code and the chapter 6 image pipeline. The live-model
-demos also need a provider key. Each chapter's README says which files need what.
+stubs in each file's `__main__` block. A few listings need the extras, mainly
+the chapter 2 fine-tuning code, and the ones that call a hosted model also need
+a provider key. Each chapter's README says which files need what.
 
 ## How the code is organized
 
@@ -47,9 +47,6 @@ cd ch04
 python C06_Menguy_MarketingAISystems.py
 ```
 
-Code that is not printed in the book, such as the chapter 6 live-model demos,
-lives in an `extras/` subfolder of its chapter.
-
 To run every listing that your installed dependencies support:
 
 ```bash
@@ -59,19 +56,8 @@ python scripts/run_listings.py ch04 ch05  # selected chapters
 
 ## Table of contents
 
-| Chapter | Code |
-|---|---|
-| 1. The Generative Marketing Stack | [ch01](ch01) |
-| 2. Representing Brand Identity: Approaches and Tradeoffs | [ch02](ch02) |
-| 3. Marketing-Specific Prompt Engineering | [ch03](ch03) |
-| 4. Retrieval over Brand Knowledge | [ch04](ch04) |
-| 5. AI Copywriting Systems | [ch05](ch05) |
-| 6. Creative Image and Video Generation | [ch06](ch06) |
-| 7. Personalization with LLMs | [ch07](ch07) |
-| 8. Cost, Latency, and Multi-Tenant Architecture | [ch08](ch08) |
-| 9. Marketing Agents and Copilots | coming soon |
-| 10. Safety, Governance, and Regulatory Compliance | coming soon |
-| 11. Evaluation and Business Impact | coming soon |
+<!-- chapters:start -->
+<!-- chapters:end -->
 
 ## The running example
 

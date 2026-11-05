@@ -30,13 +30,9 @@ uv pip install -r requirements.txt
 ## Optional dependencies
 
 `requirements.txt` installs only NumPy, which covers most listings. Install
-`requirements-extras.txt` when you reach a listing that needs more:
-
-| What | Packages | Where it is used |
-|---|---|---|
-| Fine-tuning and embeddings | torch, transformers, peft, trl, datasets, sentence-transformers | Chapter 2; the optional cross-encoder in chapter 4 |
-| Image processing | pillow | Chapter 6 |
-| Hosted model clients | anthropic, openai | Listings and extras that call a live model |
+`requirements-extras.txt` when you reach a listing that needs more. The comment
+on each line of that file lists the chapters that use the package; the largest
+set is the fine-tuning stack (torch, transformers, peft, trl) in chapter 2.
 
 ```bash
 pip install -r requirements-extras.txt

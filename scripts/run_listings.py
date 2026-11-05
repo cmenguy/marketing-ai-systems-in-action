@@ -12,9 +12,9 @@ Usage:
 from __future__ import annotations
 
 import argparse
+import ast
 import importlib.util
 import os
-import re
 import subprocess
 import sys
 import time
@@ -22,7 +22,6 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 LISTING_GLOB = "C[0-9][0-9]_Menguy_MarketingAISystems.py"
-TOP_LEVEL_IMPORT = re.compile(r"^(?:from|import)\s+([A-Za-z_][\w]*)", re.MULTILINE)
 
 # Hosted-model SDKs whose clients read a key from the environment.
 KEY_FOR_MODULE = {"anthropic": "ANTHROPIC_API_KEY", "openai": "OPENAI_API_KEY"}
@@ -35,8 +34,19 @@ def chapter_dirs(selected: list[str]) -> list[Path]:
     return dirs
 
 
+def module_level_imports(path: Path) -> list[str]:
+    """Imports that run when the file loads; imports inside functions or try blocks are optional."""
+    names = []
+    for node in ast.parse(path.read_text(), filename=str(path)).body:
+        if isinstance(node, ast.Import):
+            names += [a.name.split(".")[0] for a in node.names]
+        elif isinstance(node, ast.ImportFrom) and node.level == 0 and node.module:
+            names.append(node.module.split(".")[0])
+    return names
+
+
 def external_imports(listing: Path) -> set[str]:
-    """Top-level imports of a listing, following imports of sibling listings."""
+    """Module-level imports of a listing, following imports of sibling listings."""
     siblings = {p.stem: p for p in listing.parent.glob("*.py")}
     seen, todo, modules = set(), [listing], set()
     while todo:
@@ -44,7 +54,7 @@ def external_imports(listing: Path) -> set[str]:
         if path in seen:
             continue
         seen.add(path)
-        for module in TOP_LEVEL_IMPORT.findall(path.read_text()):
+        for module in module_level_imports(path):
             if module in siblings:
                 todo.append(siblings[module])
             else:
