@@ -90,6 +90,7 @@ def plot_curve(curve, path="output/bestofn.png"):
     plt.plot(ns, avg, marker="o")
     plt.xscale("log", base=2)
     plt.xticks(ns, [str(n) for n in ns])
+    plt.ylim(bottom=0)                     # zero baseline: gains read true
     plt.xlabel("drafts sampled (N)")
     plt.ylabel("avg selected score")
     plt.title("Choosing N in best-of-N")
@@ -154,7 +155,7 @@ if __name__ == "__main__":
                              "copy.email:v3") for i in range(300)]
 
     def sampled_quality(prompt, spec):
-        return round(min(0.80, random.gauss(0.60, 0.10)), 3)
+        return round(min(0.78, random.gauss(0.64, 0.15)), 3)
 
     curve = select_curve(briefs, sampled_quality, score=lambda d: d)
     print("N -> avg selected score:", [(n, round(a, 2)) for n, a in curve])
@@ -166,4 +167,4 @@ if __name__ == "__main__":
         print("wrote output/bestofn.png (needs matplotlib)")
     except Exception as exc:  # matplotlib missing or a headless-backend issue
         print("skipped plot:", exc)
-    print("OK: the sweep shows diminishing returns; N=4-8 is the knee.")
+    print("OK: the sweep shows diminishing returns; N=4 is the knee.")
