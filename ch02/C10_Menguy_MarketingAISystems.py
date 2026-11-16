@@ -39,15 +39,20 @@ from C09_Menguy_MarketingAISystems import (
 def _gen(model, tok, brief: str) -> str:
     enc = tok(f"Brief: {brief}\nCopy:", return_tensors="pt")
     out = model.generate(**enc, max_new_tokens=40, do_sample=False,
+                         no_repeat_ngram_size=3,
                          pad_token_id=tok.eos_token_id)
-    reply = tok.decode(out[0], skip_special_tokens=True)
-    return reply.split("Copy:", 1)[-1].strip()
+    new = out[0][enc.input_ids.shape[1]:]          # drop the echoed prompt
+    reply = tok.decode(new, skip_special_tokens=True).strip()
+    return reply.split("\n", 1)[0]                 # one line of copy
 
 
 def brand_writer(base: str, brands, out: str = "adapters"):
     """Keep adapters separate: load the base once, attach each brand by name."""
     model = AutoModelForCausalLM.from_pretrained(base)
-    for brand in brands:
+    first, *rest = brands
+    model = PeftModel.from_pretrained(model, os.path.join(out, first),
+                                      adapter_name=first)
+    for brand in rest:
         model.load_adapter(os.path.join(out, brand), adapter_name=brand)
     return model, AutoTokenizer.from_pretrained(base)
 

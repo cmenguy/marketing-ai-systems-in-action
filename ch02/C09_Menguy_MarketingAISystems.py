@@ -24,8 +24,8 @@ reach for QLoRA at 13B and up or on constrained hardware.
 
 Runs on CPU with a small open base (SmolLM2-135M) so it needs no GPU; a training
 run is a couple of minutes. The output is not the point at this size: with a tiny
-base, four examples per brand, and a three-epoch SFT, the copy is rough and you
-should not read voice quality into it. The mechanics are the point, and they are
+base and four examples per brand, the copy is rough and you should not read voice
+quality into it. The mechanics are the point, and they are
 the real ones: each adapter trains only on its own brand's copy through a standard
 SFTTrainer, and because the base stays frozen, the adapters are independent and a
 few megabytes each. Adapters are written to a temp directory and cleaned up.
@@ -81,16 +81,18 @@ def sft_train(model, tok, dataset, work_dir: str):
     """Standard supervised fine-tuning with trl's SFTTrainer. Swap it for a
     DPOTrainer on preference pairs, or whatever the current best trainer is; the
     LoRA adapter it produces is the same artifact, only the loss changes. (The
-    extra SFTConfig args here just pin it to CPU and silence checkpoints/logs.)"""
+    extra SFTConfig args here just pin it to CPU and silence checkpoints/logs.
+    Ten epochs at 1e-3 suits this four-example toy corpus; on a real corpus of
+    hundreds of examples, 2-3 epochs at ~2e-4 is the usual starting point.)"""
     trainer = SFTTrainer(
         model=model,
         train_dataset=dataset,
         processing_class=tok,
         args=SFTConfig(
             output_dir=work_dir,
-            num_train_epochs=3,
+            num_train_epochs=10,
             per_device_train_batch_size=1,
-            learning_rate=2e-4,
+            learning_rate=1e-3,
             lr_scheduler_type="constant",
             max_length=128,
             report_to=[],
